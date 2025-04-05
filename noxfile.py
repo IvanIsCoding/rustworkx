@@ -3,6 +3,8 @@ import nox
 nox.options.reuse_existing_virtualenvs = True
 nox.options.stop_on_first_error = True
 
+VENV_BACKEND = "uv|virtualenv"
+
 deps = [
   "setuptools-rust",
   "fixtures",
@@ -35,15 +37,15 @@ def base_test(session):
     session.chdir("tests")
     session.run("stestr", "run", *session.posargs)
 
-@nox.session(python=["3"])
+@nox.session(python=["3"], venv_backend=VENV_BACKEND)
 def test(session):
     base_test(session)
 
-@nox.session(python=["3.9", "3.10", "3.11", "3.12"])
+@nox.session(python=["3.9", "3.10", "3.11", "3.12"], venv_backend=VENV_BACKEND)
 def test_with_version(session):
     base_test(session)
 
-@nox.session(python=["3"])
+@nox.session(python=["3"], venv_backend=VENV_BACKEND)
 def lint(session):
     black(session)
     typos(session)
@@ -52,7 +54,7 @@ def lint(session):
     session.run("cargo", "fmt", "--all", "--", "--check", external=True)
     session.run("python", "tools/find_stray_release_notes.py")
 
-@nox.session(python=["3"])
+@nox.session(python=["3"], venv_backend=VENV_BACKEND)
 def docs(session):
     install_rustworkx(session)
     session.install("-r", "docs/source/requirements.txt", "-c", "constraints.txt")
@@ -61,23 +63,23 @@ def docs(session):
     session.chdir("docs")
     session.run("sphinx-build", "-W", "-d", "build/.doctrees", "-b", "html", "source", "build/html", *session.posargs)
 
-@nox.session(python=["3"])
+@nox.session(python=["3"], venv_backend=VENV_BACKEND)
 def docs_clean(session):
     session.chdir("docs")
     session.run("rm", "-rf", "build", "source/apiref", external=True)
 
-@nox.session(python=["3"])
+@nox.session(python=["3"], venv_backend=VENV_BACKEND)
 def black(session):
     session.install(*[d for d in lint_deps if "black" in d])
     session.run("black", "rustworkx", "tests", "retworkx", *session.posargs)
 
-@nox.session(python=["3"])
+@nox.session(python=["3"], venv_backend=VENV_BACKEND)
 def typos(session):
     session.install(*[d for d in lint_deps if "typos" in d])
     session.run("typos", "--exclude", "releasenotes")
     session.run("typos", "--no-check-filenames", "releasenotes")
 
-@nox.session(python=["3"])
+@nox.session(python=["3"], venv_backend=VENV_BACKEND)
 def stubs(session):
     install_rustworkx(session)
     session.install(*stubs_deps)

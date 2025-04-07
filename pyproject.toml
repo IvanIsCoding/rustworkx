@@ -81,7 +81,7 @@ lint = [
     "typos~=1.28",
 ]
 stubs = [
-    "mypy==1.11.2",
+    "mypy==1.15.0",
     "typing-extensions>=4.4",
 ]
 docs = [

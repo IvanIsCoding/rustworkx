@@ -87,4 +87,6 @@ def stubs(session):
     install_rustworkx(session)
     session.install(*stubs_deps)
     session.chdir("tests")
-    session.run("python", "-m", "mypy.stubtest", "--concise", "rustworkx")
+    session.run(
+        "python", "-m", "mypy.stubtest", "--concise", "rustworkx", "--allowlist", "stubtest_allowlist.txt",
+    )

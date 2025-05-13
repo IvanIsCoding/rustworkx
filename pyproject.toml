@@ -122,10 +122,7 @@ select = [
     "PYI", # flake8-pyi
     "Q",   # flake8-quotes
 ]
-#per-file-ignores = {
-#    "rustworkx/__init__.py": ["F405", "F403"],
-#    "*.pyi": ["F403", "F405", "PYI001", "PYI002"],
-#}
+per-file-ignores = {"rustworkx/__init__.py" = ["F405", "F403"], "*.pyi" = ["F403", "F405", "PYI001", "PYI002"]}
 
 
 [tool.typos.default]
@@ -174,17 +171,15 @@ pyodide-build = ">=0.30.2,<0.31"
 emscripten = ">=3.1.58,<4"
 nodejs = ">=22.13.0,<22.14"
 
-[tool.pixi.task]
-configure_nightly = {cmd = ["rustup", "install", "nightly-2025-02-01"]}
-configure_wasm = {
-    cmd = ["rustup", "target", "add", "wasm32-unknown-emscripten", "--toolchain", "nightly-2025-02-01"],
-    depends-on = ["configure_nightly"]
-}
-build_pyodide = {
-    cmd = ["pyodide", "build"],
-     env = {
-        RUSTUP_TOOLCHAIN = "hello",
-        RUSTFLAGS = "-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=-sSIDE_MODULE=2 -C link-arg=-sWASM_BIGINT -Z emscripten-wasm-eh",
-    } 
-    depends-on = ["configure_wasm"]
-}
+
+[tool.pixi.tasks.configure_nightly]
+cmd = ["rustup", "install", "nightly-2025-02-01"]
+
+[tool.pixi.tasks.configure_wasm]
+cmd = ["rustup", "target", "add", "wasm32-unknown-emscripten", "--toolchain", "nightly-2025-02-01"]
+depends-on = ["configure_nightly"]
+
+[tool.pixi.tasks.build_pyodide]
+cmd = ["pyodide", "build"]
+env = { RUSTUP_TOOLCHAIN = "nightly-2025-02-01", RUSTFLAGS = "-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=-sSIDE_MODULE=2 -C link-arg=-sWASM_BIGINT -Z emscripten-wasm-eh"} 
+depends-on = ["configure_wasm"]

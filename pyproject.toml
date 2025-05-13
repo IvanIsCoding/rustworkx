@@ -184,6 +184,10 @@ rust-src = "==1.86"
 #cmd = ["rustup", "target", "add", "wasm32-unknown-emscripten", "--toolchain", "nightly-2025-02-01"]
 #depends-on = ["configure_nightly"]
 
+[tool.pixi.tasks.install_xbuildenv]
+cmd = ["pyodide", "build", "install", "0.27.5"]
+
 [tool.pixi.tasks.build_pyodide]
 cmd = ["pyodide", "build"]
-env = { RUSTC_BOOTSTRAP = "1", RUSTFLAGS = "-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=-sSIDE_MODULE=2 -C link-arg=-sWASM_BIGINT -Z emscripten-wasm-eh"} 
+env = { RUSTC_BOOTSTRAP = "1", RUSTFLAGS = "-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=-sSIDE_MODULE=2 -C link-arg=-sWASM_BIGINT"} #  -Z emscripten-wasm-eh 
+depends-on = ["install_xbuildenv"]

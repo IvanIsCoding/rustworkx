@@ -167,7 +167,7 @@ platforms = ["linux-64"]
 default = {features = [], solve-group = "default"}
 
 [tool.pixi.dependencies]
-python = "==3.12.10"
+python = "==3.12.7"
 pip="==25.1"
 pyodide-build = "==0.30.2"
 emscripten = "==3.1.58"

@@ -25,3 +25,7 @@ rustworkx-core/Cargo.lock
 **/.DS_Store
 venv/
 .python-version
+
+# pixi environments
+.pixi
+*.egg-info

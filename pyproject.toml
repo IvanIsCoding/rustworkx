@@ -176,16 +176,8 @@ rust = "==1.86"
 rust-std-wasm32-unknown-emscripten = "==1.86"
 rust-src = "==1.86"
 
-
-#[tool.pixi.tasks.configure_nightly]
-#cmd = ["rustup", "install", "nightly-2025-02-01"]
-
-#[tool.pixi.tasks.configure_wasm]
-#cmd = ["rustup", "target", "add", "wasm32-unknown-emscripten", "--toolchain", "nightly-2025-02-01"]
-#depends-on = ["configure_nightly"]
-
 [tool.pixi.tasks.install_xbuildenv]
-cmd = ["pyodide", "build", "install", "0.27.5"]
+cmd = ["pyodide", "xbuildenv", "install", "0.27.5"]
 
 [tool.pixi.tasks.build_pyodide]
 cmd = ["pyodide", "build"]

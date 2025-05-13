@@ -115,7 +115,7 @@ target-version = "py39"
 extend-exclude = ["doc"]
 
 [tool.ruff.lint]
-.select = [
+select = [
     "E",   # pycodestyle
     "F",   # pyflakes
     "UP",  # pyupgrade

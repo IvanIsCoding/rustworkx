@@ -173,3 +173,18 @@ default = {features = [], solve-group = "default"}
 pyodide-build = ">=0.30.2,<0.31"
 emscripten = ">=3.1.58,<4"
 nodejs = ">=22.13.0,<22.14"
+
+[tool.pixi.task]
+configure_nightly = {cmd = "rustup", "install", "nightly-2025-02-01"}
+configure_wasm = {
+    cmd = "rustup", args = ["target", "add", "wasm32-unknown-emscripten", "--toolchain", "nightly-2025-02-01"],
+    depends-on = ["configure_nightly"]
+}
+build_pyodide = {
+    cmd = {"pyodide", "build"},
+     env = {
+        RUSTUP_TOOLCHAIN = "hello",
+        RUSTFLAGS = "-C target-feature=+atomics,+bulk-memory,+mutable-globals -C link-arg=-sSIDE_MODULE=2 -C link-arg=-sWASM_BIGINT -Z emscripten-wasm-eh",
+    } 
+    depends-on = ["configure_wasm"]
+}

@@ -95,6 +95,7 @@ environments:
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ruamel.yaml-0.18.10-py312h66e93f0_0.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/ruamel.yaml.clib-0.2.8-py312h66e93f0_1.conda
       - conda: https://conda.anaconda.org/conda-forge/linux-64/rust-1.86.0-h1a8d7c4_0.conda
+      - conda: https://conda.anaconda.org/conda-forge/noarch/rust-src-1.86.0-unix_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/rust-std-wasm32-unknown-emscripten-1.86.0-unix_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/rust-std-x86_64-unknown-linux-gnu-1.86.0-h2c6d0dc_0.conda
       - conda: https://conda.anaconda.org/conda-forge/noarch/setuptools-80.1.0-pyhff2d567_0.conda
@@ -1266,6 +1267,18 @@ packages:
   purls: []
   size: 218638108
   timestamp: 1743697775334
+- conda: https://conda.anaconda.org/conda-forge/noarch/rust-src-1.86.0-unix_0.conda
+  sha256: 73cc7c49ef8088fc5186f6aee48166ca71c7dc527997a592f5b76a815f4bda88
+  md5: 9c2af1ca0493191466b300691edc2145
+  depends:
+  - __unix
+  constrains:
+  - rust >=1.86.0,<1.86.1.0a0
+  license: MIT
+  license_family: MIT
+  purls: []
+  size: 3568928
+  timestamp: 1743696829470
 - conda: https://conda.anaconda.org/conda-forge/noarch/rust-std-wasm32-unknown-emscripten-1.86.0-unix_0.conda
   sha256: c5372b6d23b8826d275e6e09f73a9ea1f7a2e77c3c9fe487f166879c5269e44a
   md5: a618a92c573bcf85c9c357f73e35d95e

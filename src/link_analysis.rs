@@ -21,13 +21,35 @@ use crate::iterators::CentralityMapping;
 use crate::{FailedToConverge, weight_callable};
 
 use hashbrown::HashMap;
+use ndarray::Zip;
 use ndarray::prelude::*;
-use ndarray_stats::{DeviationExt, QuantileExt};
 use petgraph::prelude::*;
 use petgraph::visit::IntoEdgeReferences;
 use petgraph::visit::NodeIndexable;
 use rustworkx_core::dictmap::*;
 use sprs::{CsMat, TriMat};
+
+fn l1_dist(first: &Array1<f64>, second: &Array1<f64>) -> f64 {
+    let mut result = 0.0;
+    Zip::from(first).and(second).for_each(|first_i, second_i| {
+        result += (first_i - second_i).abs();
+    });
+    result
+}
+
+fn max_skipnan(values: &Array1<f64>) -> f64 {
+    values
+        .iter()
+        .filter(|value| !value.is_nan())
+        .fold(None, |acc, value| {
+            Some(match acc {
+                Some(acc) if acc >= value => acc,
+                _ => value,
+            })
+        })
+        .copied()
+        .unwrap_or(f64::NAN)
+}
 
 /// Computes the PageRank of the nodes in a :class:`~PyDiGraph`.
 ///
@@ -198,7 +220,7 @@ pub fn pagerank(
             .sum();
         let new_popularity =
             alpha * ((&a * &popularity) + (dangling_sum * &dangling_weights)) + &damping;
-        let norm: f64 = new_popularity.l1_dist(&popularity).unwrap();
+        let norm = l1_dist(&new_popularity, &popularity);
         if norm < (n as f64) * tol {
             has_converged = true;
             break;
@@ -345,8 +367,8 @@ pub fn hits(
         // we don't have to worry about sparsity
         let temp_hub = &a * &authority;
         let mut new_authority = &a_t * &temp_hub;
-        new_authority /= *new_authority.max_skipnan();
-        let norm: f64 = new_authority.l1_dist(&authority).unwrap();
+        new_authority /= max_skipnan(&new_authority);
+        let norm = l1_dist(&new_authority, &authority);
         if norm < tol {
             has_converged = true;
             break;

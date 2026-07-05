@@ -18,6 +18,28 @@ import rustworkx as rx
 
 
 class TestHyperbolicGreedyRouting(unittest.TestCase):
+    @unittest.skip("TODO: validate positions against stable node indices")
+    def test_greedy_routing_rejects_positions_missing_removed_node_row(self):
+        graph = rx.PyGraph()
+        graph.add_nodes_from(range(4))
+        graph.add_edges_from_no_data([(1, 2), (2, 3)])
+        graph.remove_node(0)
+        positions = [[0.1, 0.2], [0.2, 0.3], [0.3, 0.4]]
+
+        with self.assertRaises(ValueError):
+            rx.hyperbolic_greedy_routing(graph, positions, 1, 3)
+
+    @unittest.skip("TODO: validate positions against stable node indices")
+    def test_greedy_success_rate_rejects_positions_missing_removed_node_row(self):
+        graph = rx.PyGraph()
+        graph.add_nodes_from(range(4))
+        graph.add_edges_from_no_data([(1, 2), (2, 3)])
+        graph.remove_node(0)
+        positions = [[0.1, 0.2], [0.2, 0.3], [0.3, 0.4]]
+
+        with self.assertRaises(ValueError):
+            rx.hyperbolic_greedy_success_rate(graph, positions)
+
     def test_invalid_node_error(self):
         graph = rx.PyGraph()
         positions = []

@@ -16,6 +16,28 @@ import rustworkx
 
 
 class TestEdges(unittest.TestCase):
+    @unittest.skip("TODO: fix edge-list extension with removed endpoint nodes")
+    def test_extend_from_edge_list_recreates_removed_endpoint(self):
+        graph = rustworkx.PyGraph()
+        graph.add_nodes_from(range(6))
+        graph.remove_nodes_from([1, 2])
+
+        graph.extend_from_edge_list([(1, 3)])
+
+        self.assertTrue(graph.has_node(1))
+        self.assertTrue(graph.has_edge(1, 3))
+
+    @unittest.skip("TODO: fix weighted edge-list extension with removed endpoint nodes")
+    def test_extend_from_weighted_edge_list_recreates_removed_endpoint(self):
+        graph = rustworkx.PyGraph()
+        graph.add_nodes_from(range(6))
+        graph.remove_nodes_from([1, 2])
+
+        graph.extend_from_weighted_edge_list([(1, 3, "edge")])
+
+        self.assertTrue(graph.has_node(1))
+        self.assertEqual("edge", graph.get_edge_data(1, 3))
+
     def test_get_edge_data(self):
         graph = rustworkx.PyGraph()
         node_a = graph.add_node("a")

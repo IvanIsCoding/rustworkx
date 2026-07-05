@@ -36,6 +36,17 @@ class TestSingleSourceAllShortestPaths(unittest.TestCase):
         expected = {0: [[0]], 1: [[0, 1]], 2: [[0, 1, 2], [0, 3, 2]], 3: [[0, 3]]}
         self.assertEqual(sorted(paths[2]), sorted(expected[2]))
 
+    @unittest.skip("TODO: accept valid stable source indices after node removal")
+    def test_single_source_all_shortest_paths_with_removed_lower_node(self):
+        graph = rustworkx.PyGraph()
+        graph.add_nodes_from(range(4))
+        graph.add_edges_from([(1, 2, 1.0), (2, 3, 1.0)])
+        graph.remove_node(0)
+
+        paths = rustworkx.graph_single_source_all_shortest_paths(graph, 3)
+
+        self.assertEqual([[3, 2, 1]], paths[1])
+
     def test_single_source_all_shortest_paths_grid(self):
         paths = rustworkx.graph_single_source_all_shortest_paths(self.grid, 1)
         expected = [

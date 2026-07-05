@@ -36,7 +36,8 @@ features = ["rayon"]
 # downstream crates have to implicitly match this version.  The range must at least be compatible with the
 # `rustworkx` Python component and also be MSRV compliant.
 version = ">=0.15, <0.18"
-features = ["rayon"]
+default-features = false
+features = ["rayon", "default-hasher", "inline-more", "equivalent", "raw-entry"]
 
 [dev-dependencies]
 quickcheck = "1.0"
